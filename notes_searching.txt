@@ -1,0 +1,14 @@
+search notes
+
+find files with "Stove"
+$ ack -l "<name>Stove</name>"
+
+print all xml
+$ ack . --type=xml
+
+renaming
+using rename (brew install rename):
+$ rename 's/ /_/' *.xml       \ this works but has pagination issues
+
+using for, echo, sed
+$ for f in *.xml; do mv "$f" "$(echo $f | sed 's/ /_/g')"; done
