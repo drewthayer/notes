@@ -1,11 +1,31 @@
+Bash version
+$ echo "${BASH_VERSION}"
+
 Searching
   $ ack: search tool
     Usage: ack [OPTION]... PATTERN [FILES OR DIRECTORIES]
     https://beyondgrep.com/documentation/
 
+  $ grep
+    find pattern in files in dir:
+      $ grep -rnw '/path/to/somewhere/' -e 'pattern'
+    find and count:
+      $ grep -rnw Exterior_set_00_Phase_Four_XML/ -e "bordering wall" | wc -l
+    https://stackoverflow.com/questions/16956810/how-do-i-find-all-files-containing-specific-text-on-linux
+
 Find
   Find all files with an extention:
   $ find . -name '*.xml'
+
+  Find all but excude some
+  $ find . -type f \( -name "*.zip" ! -name "*_xml.zip" \) | sort
+  $ find . -type f \( -name '*_jpg.zip' ! -name "*03*" ! -name "*02*" \)
+
+  Find without hidden files
+  $  find . -type f \( -name "*.zip" ! -name ".*" \)
+
+  Find all dirs with extension and print sorted
+  $ find . -type d -name "*_xml" | sort
 
   Find all files with extension for a user
   $ find /Users/username -name ".git" -print
@@ -13,10 +33,43 @@ Find
   Find all files with an extension and delete:
   $ find . -name '*.xml' -delete
 
+  Find and replace
+    find all dirs with xml and replace "I_" with "I-"
+    pipe to rename:
+    $ find . -type d -name "*xml" | rename 's/I_/I-/g' *
+
+    or just rename:
+    $ rename 's/I_/I-/g' *
+
+Find and delete
+  $ find . -type f \( -name "*.zip" ! -name "*_xml.zip" \) -execdir rm {} \;
+Find and zip
+  $ find . -type d -name "*" -execdir  zip -r '{}'.zip '{}' \;
+Find and copy (or move) directories
+  $ find . -type d -execdir cp -r '{}' ~/wilderai/flyreel/flyreel_datasets/exterior_v0.6/'{}' \;
+
+Find and copy or move files
+  $ find . -type f -exec mv {} $TARGET \;
+
+Find and scp to remote
+  $ find . -name "*_xml.zip" -exec scp -i ~/.ssh/flyreel.pem '{}' ubuntu@ec2-34-217-136-36.us-west-2.compute.amazonaws.com:data/labelimg/exterior_v0.1/ \;
+
+Rename
+  Dry run
+  $ rename -n 's/Images*/images/g' *
+
+  Changing case:
+  On OSX, case-insensitive so need -f
+  $ rename -f 's/XML/xml/g' *
+
+
 List files
   $ ls
   $ ls cat            files in a vertical column
   $ ls | cat -n       files in a vertical column, numbered
+
+Find any subdirectories (will go to all levels)
+  $ find . -type d
 
 Change file names sequentially
   $ ls | cat -n | while read n f; do mv "$f" "$n.png"; done
@@ -30,6 +83,7 @@ Directory Size
   $ du (degree utilization)
     -h        human-readable
     -d 1      depth (int)
+  $ du -h --max-depth=1 #works on ubuntu
   $ du -h -d 1 (show all, human readable, 1 level)
   $ du -h -d 1 | sort -hr (show all, human readable, 1 level, sorted high to low)
 
@@ -44,3 +98,113 @@ File Permissions
   chmod 755 directory	For files that should be readable and executable by others, but only changeable by the issuing user.
   chmod 775 file	Standard file sharing mode for a group.
   chmod 777 file	Everybody can do everything to this file.
+
+Bash loops
+http://www.metagenomics.wiki/tools/ubuntu-linux/shell-loop
+https://www.cyberciti.biz/faq/bash-for-loop/
+  basic:
+  $ for i in {1..10}; do echo $i; done
+  $ for i in 1 2 3 4 5; do echo ${i}; done
+  $ for i in "*.h5"; do echo ${i}; done
+  $ seq 2 8
+  $ seq -w 02 20
+  $ seq -f "resnet50_csv_%g.h5" 04 14 > "resnet50_csv_4.h5" etc
+
+  loops with files
+  $ for i in {1..10}; do touch my_file_${i}.txt; done
+  $ for i in {4..8}; do rm my_file_${i}.txt; done
+  $ for i in {1..40}; do rm resnet50_csv_${i}.h5; done            remove sequential files with 1:40
+  $ for i in 0{1..9} {10..40}; do rm resnet50_csv_${i}.h5; done   remove sequential files with 01:40
+
+  loop through arbitrary files and rename to sequential (this will not preserve old files despite -n, but might not overwrite?)
+  $ num=0; for i in *.jpg; do mv -n "$i" "$(printf oman_'%02d' $num).${i#*.}"; ((num++)); done
+
+Using screen multiplexer
+  http://www.kinnetica.com/2011/05/29/using-screen-on-mac-os-x/
+
+  $ screen                  start screen
+  $ screen -list OR -ls     list
+  $ screen -r PID           re-attach to terminal by PID
+  $ screen -t "name"        create a terminal with a name
+  $ screen -S "name"        create a terminal with name you can see in $ screen -ls
+
+  navigation
+    ctrl+a  d    detach
+    ctrl+a  "    list of open terminals
+    ctrl+a  A    prompt to name a new terminal
+    ctrl+a  n    next
+    ctrl+a  p    previous
+
+
+  kill a screen connection
+    $ screen -r 90499
+      ctrl+a, k, 'y'
+    OR
+    $ screen -XS 90499 quit
+
+AWS s3 copy
+  https://openedx.atlassian.net/wiki/spaces/OpenOPS/pages/25559308/How+to+use+the+S3+command-line+tool+Mac+OSX+Linux
+
+  list items in a bucket
+    $ aws s3 ls s3://bucket-name/path/to/file
+    $ aws s3 ls s3://bucket-name/path/to/file --human-readable
+
+  download/upload
+    $ aws s3 cp s3://bucket-name/path/to/file ~/Downloads
+    $ aws s3 cp ~/Downloads/file1.zip s3://bucket-name/path/to/destination --acl public-read
+      --acl public-read sets permissions for public to see the file
+
+  remove file from bucket
+    $ aws s3 rm s3://bucket-name/path/to/file
+
+  sync local dir with s3 bucket
+    $ aws s3 sync . s3://mybucket
+
+Operating on a remote instance
+basic navigation and metrics
+  $ df -h         storage on whole drive
+  $ du -h         storage, drills down
+  $ du -sh        storage of this drive, summary (returns 1 value)
+  -c              adds total on last line (val of summary)
+  --max-depth=1   limit depth
+  old but works: https://www.peterbe.com/plog/du-max-depth
+
+background processes
+  $ ps aux | less   see all processes in a scroll-able display
+  $ kill 1234       kill process 1234 (PID)
+
+Boto3
+  credentials https://stackoverflow.com/questions/41701767/boto3-how-to-connect-different-account-in-different-region
+
+
+options to run with multiplexer/nohup
+  a. run with $ screen
+  b. run with nohup: runs as background process and writes stdout to output file
+    - create a results/interior_v1.0 directory first (nohup needs dir to exist to write)
+    - $ nohup python2 keras_retinanet/bin/train.py {args} > results/interior_v1.0/output.txt &
+        - commands after nohup cannot be passed as aliases to bash environment (e.g. in ~/.bashrc: python --> python2)
+        - explicitly call the commands e.g. python2
+        - https://superuser.com/questions/1174903/python-runs-differently-with-nohup
+  c. view processes by PID
+    - nohup pipes output to output.txt & runs in background (in sub-shell)
+    - at initiation, will print a PID # (e.g. [1] 21544)
+    - to kill: $ kill 21544
+    - to view processes: $ ps
+  d. read output file with $ tail
+    - $ tail -F -n 100 results/interior_v1.0/output.txt
+    - Reading output files: less and tail
+    - https://unix.stackexchange.com/questions/193620/is-tail-f-more-efficient-than-less-f
+
+SSH hostkey error
+  delete offending key from ~/.ssh/known_hosts
+  https://www.digitalocean.com/community/questions/warning-remote-host-identification-has-changed
+  https://coderwall.com/p/xij9gq/elegant-way-to-remove-offending-key-from-known-hosts-file
+  https://superuser.com/questions/421004/how-to-fix-warning-about-ecdsa-host-key
+Watching logs
+  stdout written to out file (e.g. nohup > file.txt)
+    $ tail -F -n 100 file
+  https://stackoverflow.com/questions/34018931/how-to-view-aws-log-real-time-like-tail-f
+
+Numpy data arrays
+c-contiguous, f-contiguous
+https://stackoverflow.com/questions/29947639/cheapest-way-to-get-a-numpy-array-into-c-contiguous-order

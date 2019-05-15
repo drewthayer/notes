@@ -1,0 +1,33 @@
+setting up environment for computer vision
+
+finding paths
+ $ os.__file__
+
+keras-retinanet home: /anaconda3/lib/python3.6/site-packages/keras_retinanet/bin
+
+tutorials
+  https://medium.com/@arunponnusamy/setting-up-deep-learning-environment-the-easy-way-on-macos-high-sierra-f1b6331ffc40
+  https://www.pyimagesearch.com/2016/11/14/installing-keras-with-tensorflow-backend/
+  https://medium.com/@manuganji/installation-of-opencv-numpy-scipy-inside-a-virtualenv-bf4d82220313
+  https://docs.python-guide.org/starting/install3/osx/
+  https://realpython.com/python-virtual-environments-a-primer/
+
+Installing different version of python with brew
+  python 3.6: https://github.com/sashkab/homebrew-python
+  discussion: https://apple.stackexchange.com/questions/329187/homebrew-rollback-from-python-3-7-to-python-3-6-5-x
+
+  $ brew info python
+  $ brew switch python 3.6.5_1  # if 3.6.5_1 exists in brew formulae
+
+Installing older versions of tensorflow
+  1.12.0, for mac:
+  $ python3 -m pip install --upgrade https://storage.googleapis.com/tensorflow/mac/cpu/tensorflow-1.12.0-py3-none-any.whl
+
+
+Installing pycocotools
+  - if clang header files not found:
+    sudo installer -pkg \
+    /Library/Developer/CommandLineTools/Packages/macOS_SDK_headers_for_macOS_10.14.pkg \
+    -target /
+
+  - then: pip3 install pycocotools

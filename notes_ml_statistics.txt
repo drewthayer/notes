@@ -1,0 +1,42 @@
+notes_data_science
+
+linear regression and confidence intervals
+  - prediction interval vs confidence interval
+      - https://robjhyndman.com/hyndsight/intervals/
+      - prediction interval: "Given a prediction of ‘y’ given ‘x’, there is a 95% likelihood that the range ‘a’ to ‘b’ covers the true outcome."
+      - e.g. for a given observation x, there will be the observed value y and the predicted value y_hat. For a new prediction x_1 --> y_1, y^_1 will fall on the regression line, but the true value of y_1 for x_1 is unknown. However, there is a 95% likelihood that the true value y_1 is within the range [a,b] defined by the prediction interval.
+      - https://machinelearningmastery.com/prediction-intervals-for-machine-learning/
+
+      - prediction interval formula from https://machinelearningmastery.com/prediction-intervals-for-machine-learning/
+          - pi for y_hat:
+              - pi = y_hat +/- z * sigma; z = crit value from gaussian e.g. 1.96 for 95%, sigma = std deviation of predicted distribution
+              - sigma: unbiased estimate of the of the predicted standard deviation
+                  - un-biased, see https://en.wikipedia.org/wiki/Unbiased_estimation_of_standard_deviation
+              - sigma = stdev = sqrt(1 / (N - 2) * err(i)^2 for i to N); (e.g. sqrt(sum(y_test - y_hat)**2)) for all y_test)
+
+error bars
+  - Basically, under the assumption of approximate normality there are certain well-defined regions based on standard deviation which have a fixed probability derived from the standard normal distribution: 1) Mean plus/minus 1 standard deviation contains approximately 67% of the normally distributed data. 2) Mean plus/minus 1.96 standard deviations contains exactly 95% of the normally distributed data which is the relation where the heuristic confidence region mean plus/minus 2 standard deviations comes from. 3) Finally, mean plus/minus 3 standard deviations contains approximately 99.7% of the normally distributed data.
+
+  - So to come back to you question regarding interpretation, the location estimator plus/minus standard error, scenario 1), represents the "center of the data or area you expect to cover the value of your estimator". Scenario 2) is typically used as the 95% confidence interval for estimators. Scenario 3) can be used for outlier detection under approximate normality, as 3 out of 1000 points are to lie outside this interval.
+
+  - On a normal distribution, the mean plus or minus 1.96 standard deviations contains 95% of the data. But the 95% confidence interval is something different. For the mean, it can be calculated as 1.96 times the standard error of the mean.
+
+standard deviation vs standard error: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1255808/
+  - standard deviation: 95% of observations from a normally-distributed dataset fall within 2 std deviations of the mean
+  - standard error is as a measure of the precision of the sample mean
+      - The standard error of the sample mean depends on both the standard deviation and the sample size, by the simple relation SE = SD/√(sample size)
+      - standard error falls as sample size increases
+  - common uses:
+      - standard deviation: describe how widely scattered some measurements are (does not change with sample size)
+      - standard error: indicate the uncertainty of our estimate of the mean (95% confidence intervals)
+          - For a large sample, a 95% confidence interval is obtained as the values 1.96×SE either side of the mean.
+
+formulae
+  - np.std(): np.sqrt(np.mean(abs(x - np.mean(x))**2))
+
+  http://www2.stat.duke.edu/~tjl13/s101/slides/unit6lec3H.pdf
+  https://nbviewer.jupyter.org/github/demotu/BMC/blob/master/notebooks/CurveFitting.ipynb
+
+
+log transform
+  - https://stats.stackexchange.com/questions/336315/will-log-transformation-always-mitigate-heteroskedasticity

@@ -1,3 +1,5 @@
+info: https://hackernoon.com/a-gentle-introduction-to-tmux-8d784c404340
+
 # tmux shortcuts & cheatsheet
 
 start new:

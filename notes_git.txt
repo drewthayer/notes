@@ -1,0 +1,4 @@
+reset head to previous commit:
+	git reset --hard cedc856
+	git push --force origin master
+	https://www.christianengvall.se/git-reset-origin-master-to-commit/

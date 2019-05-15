@@ -1,0 +1,6 @@
+random choice for argmin
+  np.random.choice()
+  test:
+  xx = np.array([0,2,4,1,2,5,0,3,0,0,5])
+  y = [np.random.choice(np.flatnonzero(xx == xx.min())) for i in range(100)]
+  np.bincount(y): array([20,  0,  0,  0,  0,  0, 29,  0, 27, 24])
