@@ -1,5 +1,22 @@
 notes_data_science
 
+statistics
+  formulas
+    - http://statisticalconcepts.blogspot.com/2010/12/statistics-formulas.html
+  large sample size
+    - https://stats.stackexchange.com/questions/125750/sample-size-too-large
+  effect size 
+    - https://machinelearningmastery.com/effect-size-measures-in-python/
+
+
+
+interpreting residual plots/ heteroscedasticity
+  - http://docs.statwing.com/interpreting-residual-plots-to-improve-your-regression/
+  - https://statisticsbyjim.com/regression/check-residual-plots-regression-analysis/
+  - https://datascienceplus.com/how-to-detect-heteroscedasticity-and-rectify-it/
+  - https://zhiyzuo.github.io/Linear-Regression-Diagnostic-in-Python/
+
+
 linear regression and confidence intervals
   - prediction interval vs confidence interval
       - https://robjhyndman.com/hyndsight/intervals/
@@ -16,9 +33,7 @@ linear regression and confidence intervals
 
 error bars
   - Basically, under the assumption of approximate normality there are certain well-defined regions based on standard deviation which have a fixed probability derived from the standard normal distribution: 1) Mean plus/minus 1 standard deviation contains approximately 67% of the normally distributed data. 2) Mean plus/minus 1.96 standard deviations contains exactly 95% of the normally distributed data which is the relation where the heuristic confidence region mean plus/minus 2 standard deviations comes from. 3) Finally, mean plus/minus 3 standard deviations contains approximately 99.7% of the normally distributed data.
-
   - So to come back to you question regarding interpretation, the location estimator plus/minus standard error, scenario 1), represents the "center of the data or area you expect to cover the value of your estimator". Scenario 2) is typically used as the 95% confidence interval for estimators. Scenario 3) can be used for outlier detection under approximate normality, as 3 out of 1000 points are to lie outside this interval.
-
   - On a normal distribution, the mean plus or minus 1.96 standard deviations contains 95% of the data. But the 95% confidence interval is something different. For the mean, it can be calculated as 1.96 times the standard error of the mean.
 
 standard deviation vs standard error: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1255808/
@@ -31,6 +46,24 @@ standard deviation vs standard error: https://www.ncbi.nlm.nih.gov/pmc/articles/
       - standard error: indicate the uncertainty of our estimate of the mean (95% confidence intervals)
           - For a large sample, a 95% confidence interval is obtained as the values 1.96×SE either side of the mean.
 
+error bar recipes
+  regression forest
+    - http://contrib.scikit-learn.org/forest-confidence-interval/auto_examples/plot_mpg.html#sphx-glr-auto-examples-plot-mpg-py
+    - https://blog.datadive.net/prediction-intervals-for-random-forests/
+    - https://towardsdatascience.com/how-to-generate-prediction-intervals-with-scikit-learn-and-python-ab3899f992ed
+  linear
+    - https://machinelearningmastery.com/prediction-intervals-for-machine-learning/
+    - https://stackoverflow.com/questions/27164114/show-confidence-limits-and-prediction-limits-in-scatter-plot
+  statsmodels OLS
+    - https://stackoverflow.com/questions/46304514/access-standardized-residuals-cooks-values-hatvalues-leverage-etc-easily-i
+  bootstraped ci and pi
+    - http://www.variousconsequences.com/2010/02/visualizing-confidence-intervals.html
+    - https://nbviewer.jupyter.org/github/demotu/BMC/blob/master/notebooks/CurveFitting.ipynb
+    - https://stats.stackexchange.com/questions/226565/bootstrap-prediction-interval
+  R regression plots in python
+    - https://medium.com/@emredjan/emulating-r-regression-plots-in-python-43741952c034
+
+
 formulae
   - np.std(): np.sqrt(np.mean(abs(x - np.mean(x))**2))
 
@@ -40,3 +73,10 @@ formulae
 
 log transform
   - https://stats.stackexchange.com/questions/336315/will-log-transformation-always-mitigate-heteroskedasticity
+  - https://kenbenoit.net/assets/courses/ME104/logmodels2.pdf
+
+plotting apis
+  seaborn
+    - https://seaborn.pydata.org/generated/seaborn.lineplot.html
+  yellowbrick
+    - https://www.scikit-yb.org/en/latest/api/regressor/residuals.html

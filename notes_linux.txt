@@ -1,5 +1,11 @@
 Bash version
-$ echo "${BASH_VERSION}"
+  $ echo "${BASH_VERSION}"
+
+safe remove (prompt first)
+  $ rm -i rachio_data_20190515_sample.csv
+
+compression
+  $ tar -cf - eval/ | gzip -9 > exterior_v1.0_eval.tar.gz
 
 Searching
   $ ack: search tool
@@ -86,6 +92,10 @@ Directory Size
   $ du -h --max-depth=1 #works on ubuntu
   $ du -h -d 1 (show all, human readable, 1 level)
   $ du -h -d 1 | sort -hr (show all, human readable, 1 level, sorted high to low)
+
+random subsample from large csv in bash:
+  $ head -1 file.csv > sample.csv       copy header
+  $ shuf -n 1000 file.csv >> sample.csv  copy 1000 random rows (brew install coreutils)
 
 File Permissions
   $ chmod 400 file
