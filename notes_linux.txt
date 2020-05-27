@@ -129,29 +129,6 @@ https://www.cyberciti.biz/faq/bash-for-loop/
   loop through arbitrary files and rename to sequential (this will not preserve old files despite -n, but might not overwrite?)
   $ num=0; for i in *.jpg; do mv -n "$i" "$(printf oman_'%02d' $num).${i#*.}"; ((num++)); done
 
-Using screen multiplexer
-  http://www.kinnetica.com/2011/05/29/using-screen-on-mac-os-x/
-
-  $ screen                  start screen
-  $ screen -list OR -ls     list
-  $ screen -r PID           re-attach to terminal by PID
-  $ screen -t "name"        create a terminal with a name
-  $ screen -S "name"        create a terminal with name you can see in $ screen -ls
-
-  navigation
-    ctrl+a  d    detach
-    ctrl+a  "    list of open terminals
-    ctrl+a  A    prompt to name a new terminal
-    ctrl+a  n    next
-    ctrl+a  p    previous
-
-
-  kill a screen connection
-    $ screen -r 90499
-      ctrl+a, k, 'y'
-    OR
-    $ screen -XS 90499 quit
-
 AWS s3 copy
   https://openedx.atlassian.net/wiki/spaces/OpenOPS/pages/25559308/How+to+use+the+S3+command-line+tool+Mac+OSX+Linux
 
@@ -218,3 +195,11 @@ Watching logs
 Numpy data arrays
 c-contiguous, f-contiguous
 https://stackoverflow.com/questions/29947639/cheapest-way-to-get-a-numpy-array-into-c-contiguous-order
+
+VirtualEnv
+$ lsvirtualenv -b
+
+with virtualenv wrapper:
+$ workon      lists envs
+$ workon my_env
+$ deactivate 

@@ -1,0 +1,22 @@
+Using screen multiplexer
+  http://www.kinnetica.com/2011/05/29/using-screen-on-mac-os-x/
+
+  $ screen                  start screen
+  $ screen -list OR -ls     list
+  $ screen -r PID           re-attach to terminal by PID
+  $ screen -t "name"        create a terminal with a name
+  $ screen -mdS "name"      create a terminal with name you can see/query in $ screen -ls 
+
+  navigation in screen
+    ctrl+a  d    detach
+    ctrl+a  "    list of open terminals
+    ctrl+a  A    prompt to name a new terminal
+    ctrl+a  n    next
+    ctrl+a  p    previous
+
+
+  kill a screen connection
+    $ screen -r 90499
+      ctrl+a, k, 'y'
+    OR
+    $ screen -XS 90499 quit

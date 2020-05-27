@@ -2,3 +2,8 @@ reset head to previous commit:
 	git reset --hard cedc856
 	git push --force origin master
 	https://www.christianengvall.se/git-reset-origin-master-to-commit/
+
+delete a branch
+	$ git push --delete <remote_name> <branch_name>			delete remote (remote_name is 'origin')
+	$ git branch -d <branch_name>												delete local
+	https://stackoverflow.com/questions/2003505/how-do-i-delete-a-git-branch-locally-and-remotely
