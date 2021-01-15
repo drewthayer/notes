@@ -28,15 +28,15 @@
   - `header` arg will read in the header if exists
 
 ### create geospatial-aware lat,lon points in a table
-- `=# CREATE EXTENSION postgis   only need to do once, creates geo schema`
+- `=# CREATE EXTENSION postgis      only need to do once, creates geo schema`
 - add a blank geometry column
   - `=# ALTER TABLE tablename ADD COLUMN geom_field_name geometry(Point, 4326);`
   - use `geometry` datatype, advantages over `geography`
+  - `SRID 4326` is WGS84 coordinate system
 - populate with "latitude", "longitude" columns
   - `=# UPDATE tablename SET geom=ST_SetSRID(ST_Point(longitude, latitude), 4326);`
 - set up a gist index (makes all operations much faster)
   - `=# CREATE INDEX table_idx ON table USING gist (geom_field_name);`
-
 
 ### misc
 - back up db with pgdump `% pgdump -U <username> [-W (option for pw)] -F t (file type tar) > /path/to/backupfilename.tar`
@@ -47,8 +47,10 @@ General structure: `ogr2ogr -f <format> <output> <input> -arg1 -arg2`
 
 - importing file to PostgreSQL
   - `% ogr2ogr -f "PostgreSQL" PG:"dbname=rachio_aqueduct user=postgres" /Users/drewthayer/spatial-data/aqueduct-water-risk/Y2019M07D12_Aqueduct30_V01/baseline/annual/arcmap/y2019m07d12_aqueduct30_v01.gdb -skipfailures -progress -nln risk_polygons`
-- file conversion
+- file conversion: GDB to Shapefile
   - `ogr2ogr -f "ESRI Shapefile" /path/to/new/empty/dir/ /path/to/file.gdb -nln newtablename -progress`
+- DB to file
+  - `ogr2ogr -f "ESRI Shapefile" rel/path/to/empty/dir/ PG:"host=localhost dbname=rachio_aqueduct user=postgres password=pw" -sql "SELECT * from rachio_savings_10k" -nln rachio_savings_10k`
 - args
   - show progress bar `-progress`
   - skip failures `-skipfailures`
