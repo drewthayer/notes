@@ -37,9 +37,12 @@
   - `=# UPDATE tablename SET geom=ST_SetSRID(ST_Point(longitude, latitude), 4326);`
 - set up a gist index (makes all operations much faster)
   - `=# CREATE INDEX table_idx ON table USING gist (geom_field_name);`
+- update a geometry spatial reference system
+  - `=# SELECT UpdateGeometrySRID('tablename', 'wkb_geometry', 4326);`
 
-### misc
-- back up db with pgdump `% pgdump -U <username> [-W (option for pw)] -F t (file type tar) > /path/to/backupfilename.tar`
+### pg_dump
+- back up db with pg_dump `% pgdump -U <username> [-W (option for pw)] -F t (file type tar) > /path/to/backupfilename.tar`
+- copy table from one db to another `% pg_dump -t tablename dbname | psql otherdbname`
 
 # ogr2ogr file conversion
 

@@ -7,3 +7,166 @@ delete a branch
 	$ git push --delete <remote_name> <branch_name>			delete remote (remote_name is 'origin')
 	$ git branch -d <branch_name>												delete local
 	https://stackoverflow.com/questions/2003505/how-do-i-delete-a-git-branch-locally-and-remotely
+
+
+#### from DSI
+git syntax
+BASIC COMMANDS
+git init : initialize a new git repository
+
+git add <file> : adds file from working directory to staging area
+git add <file> -p: '-p' adds it as a patch to add iteratively, will ask you to stage each time
+git diff <file>
+git commit -m "comments" - adds changes to repository
+  Standard Conventions for Commit Messages:
+    Must be in quotation marks
+    Written in the present tense
+    Should be brief (50 characters or less) when using -m
+
+git log - see log of all previous commits
+git push <remote> <branch>
+git push -u origin master : push from master to origin
+
+See Current Repository
+git status : check status of working directory and staging area
+basename `git rev-parse --show-toplevel` (show repository name)
+
+PULLING
+git pull -r : pulls from repository to workspace, '-r' for rebase
+  rebase: pull, merge, and put new material on top
+git fetch : just grabs it
+
+checkout: move between branches, etc
+
+COLLABORATING
+Repos you are collaborating are in GitHub dashboard, bottom-right
+
+BACKTRACKING
+git show HEAD : shows the head, usually most recent commit in wkdir
+git checkout HEAD <filename> : restores file in working dir to last commits (not formal revert)
+  can checkout a file, can checkout across branches
+git reset HEAD <filename> : This command resets the file in the staging area to be the same as the HEAD commit.
+  It does not discard file changes from the working directory, it just removes them from the staging area.
+  M   <filename> ... M for modification
+git reset <commit_SHA_first7letters> - resets to that particular commit, reassigns the HEAD commits
+
+COMPARE
+git diff
+git compare
+
+BRANCH and MERGE
+git branch <newbranch>
+git checkout <newbranch>
+git push origin <newbranch>
+
+see branch
+git branch
+see remote branch
+git branch -v
+
+PAIRED GIT WORKFLOW
+  Setup
+    Person A:
+      fork and clone repository
+      add partner as collaborator
+      $ git branch <branch_name>
+      $ git push origin <branch_name>
+
+    Person B
+      $ git remote add <name> <repo_url>
+
+  work (person A)
+    Person A:
+      $ git status
+      $ git add <filename>
+      $ git commit -m 'comment'
+      $ git push origin <branch_name>
+    Person B:
+      $ git fetch <name>
+      $ git pull <name> <branch_name>
+      $ git push <name> <branch_name>
+
+hard reset: overwrite local changes
+  Git fetch —-all
+  Git reset —-hard origin/master
+	or
+  Git reset —hard <name>/<branch_name>
+
+  To save local commits first:
+	git checkout master
+	git branch <new temp branch>
+	git fetch —all …
+
+Undo a commit
+  $ git push -f origin HEAD^:master (or HEAD^^ for last 2, or HEAD~2)
+
+
+
+person B:
+go to partner's github fork
+  clone
+  to work: git pull origin A
+
+Multiple people working on a repo:
+  Person A:
+    fork a repo
+    git clone <repo>
+    settings --> add collaborators
+    send repo (html or ssh) to collaborators
+    git branch <name_A>
+    git checkout <name_A>
+  Person B,C,D:
+    git clone <repo>
+    git pull
+    git
+    git branch <name_B,C,D>
+    git checkout <name_B,C,D>
+
+  work complete: do a merge.
+  you merge INTO the directory you are in FROM the directory you call
+    git checkout master
+    git pull origin master
+    git merge <name_A>
+    git push origin master
+
+
+difference between:
+  git checkout -b branch origin/branch
+  git checkout --track origin/branch
+    The two commands have the same effect (thanks to Robert Siemer’s answer for pointing it out).
+    The practical difference comes when using a local branch named differently:
+    git checkout -b mybranch origin/abranch will create mybranch and track origin/abranch
+    git checkout --track origin/abranch will only create 'abranch', not a branch with a different name.
+
+
+touch example.txt : makes the file
+git diff master..example : compares example to master (directional)
+git merge <branch>
+git rebase master: rebases current branch to master, stacks latest changes on top
+
+delete a branch:
+git branch -D conflict
+
+file has been moved:
+mv example.txt git/example.txt : moves file to git/
+git rm example.txt
+git status: will show that file has been renamed
+
+MERGE CONFLICTS
+atom has built-in conflict highlighting
+
+Files in Git repository
+git.ignore : file with ignore cases
+https://github.com/github/gitignore
+
+start new repo
+http://kbroman.org/github_tutorial/pages/init.html
+
+The previous solutions seem to ignore origin, and they only suggest to use another name. When you just want to use git push origin, keep reading.
+
+The problem appears because a wrong order of Git configuration is followed. You might have already added a 'git origin' to your .git configuration.
+
+You can change the remote origin in your Git configuration with the following line:
+
+git remote set-url origin git@github.com:username/projectname.git
+This command sets a new URL for the Git repository you want to push to. Important is to fill in your own username and projectname
